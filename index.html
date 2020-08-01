@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input class="form-control" id='generate-pin-display' type="text">
+                    <button class="generate-btn" id="pin-button">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input class="form-control" id="input-pin-display" type="text">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                                <div class="button" id='seven'>7</div>
+                                <div class="button" id='eight'>8</div>
+                                <div class="button" id='nine'>9</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" id='four'>4</div>
+                                <div class="button" id='five'>5</div>
+                                <div class="button" id='six'>6</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" id='one'>1</div>
+                                <div class="button" id='two'>2</div>
+                                <div class="button" id='three'>3</div>
+                            </div>
+                            <div class="calc-button-row">
+
+                                <div class="button" id='delete-number'>
+                                    <</div> <div class="button" id='zero'>0
+                                </div>
+                                <div class="button" id='clear'>C</div>
+                            </div>
+                            <div>
+                                <button type="submit" class="submit-btn" id='sbumit-button'>Submit</button>
+                                <p class="action-left">3 try left</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="notify-section">
+                <p class="notify" id='fail-notification'>❌ Pin Didn't Match, Please try again</p>
+                <p class="notify" id='success-notification'>✅ Pin Matched... Secret door is opening for you</p>
+            </div>
+        </div>
+</body>
+<script>
+    //declare some necessary variable 
+
+    let pin = '';
+    let pinButton = document.getElementById('pin-button');
+    document.getElementById('generate-pin-display').value = '';
+
+    document.getElementById('input-pin-display').value = '';
+    let displayInputValue = [];
+
+    //generate auto pin 
+
+    pinButton.addEventListener('click', function () {
+        let generatePin = Math.floor(1000 + Math.random() * 9000);
+        pin = generatePin;
+        document.getElementById('generate-pin-display').value = pin;
+    })
+
+    //function to get value from number button
+
+    function getButtonValue(id) {
+        const buttonValue = document.getElementById(id).innerText;
+        const buttonNumber = parseInt(buttonValue);
+        displayInputValue.push(buttonNumber);
+        document.getElementById('input-pin-display').value = displayInputValue.join('');
+    }
+
+
+    //getting value from specific number button click 
+
+    document.getElementById('zero').addEventListener('click', function () {
+        getButtonValue('zero');
+    })
+
+    document.getElementById('one').addEventListener('click', function () {
+        getButtonValue('one');
+    })
+
+    document.getElementById('two').addEventListener('click', function () {
+        getButtonValue('two');
+    })
+
+    document.getElementById('three').addEventListener('click', function () {
+        getButtonValue('three');
+    })
+
+    document.getElementById('four').addEventListener('click', function () {
+        getButtonValue('four');
+    })
+
+    document.getElementById('five').addEventListener('click', function () {
+        getButtonValue('five');
+    })
+
+    document.getElementById('six').addEventListener('click', function () {
+        getButtonValue('six');
+    })
+
+    document.getElementById('seven').addEventListener('click', function () {
+        getButtonValue('seven');
+    })
+
+    document.getElementById('eight').addEventListener('click', function () {
+        getButtonValue('eight');
+    })
+
+    document.getElementById('nine').addEventListener('click', function () {
+        getButtonValue('nine');
+    })
+
+
+    /*matching among auto generated pin and inputed number after 
+    clicking submit button. */
+    document.getElementById('sbumit-button').addEventListener('click', function () {
+        let displayNumber = parseInt(displayInputValue.join(''));
+        if (pin === displayNumber) {
+            document.getElementById('success-notification').style.display = 'block';
+        } else {
+            document.getElementById('fail-notification').style.display = 'block';
+        }
+    })
+
+
+    // clearing number inputing display after clicking clear(c) button.
+
+    document.getElementById('clear').addEventListener('click', function () {
+        displayInputValue = [];
+        document.getElementById('input-pin-display').value = '';
+        document.getElementById('fail-notification').style.display = 'none';
+        document.getElementById('success-notification').style.display = 'none';
+    })
+
+
+    //Deleting numbering after clicking backspace button. 
+
+    document.getElementById('delete-number').addEventListener('click', function () {
+        document.getElementById('fail-notification').style.display = 'none';
+        document.getElementById('success-notification').style.display = 'none';
+        displayInputValue.pop();
+        document.getElementById('input-pin-display').value = displayInputValue.join('');
+    })
+</script>
+
+
+</html>
